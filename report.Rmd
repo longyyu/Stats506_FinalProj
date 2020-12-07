@@ -64,16 +64,19 @@ knitr::opts_chunk$set(
 source("final_project.R")
 ```
 
+****
+
 ## To-do items
 
 *  Finish the Conclusion/Discussion section
-*  Vertical-align the result table's NA values
+*  Center-align the result table's NA values vertically
 
 ****
 
 ## Introduction
 
-Over the last century, constructing methods and technics have become more advanced and constructing codes have become increasingly stringent, and new building materials have been developed to meet the evolving needs. It can be interesting to compare the wall materials for US commercial buildings used before and now. 
+Over the last century, constructing methods and techniques have become more advanced, constructing codes have become increasingly stringent, and new building materials have been developed to meet the evolving needs. It can be interesting to compare the major wall materials for US commercial buildings used before and now.  
+
 This report attempts to answer the following questions:  
 
 > How does the choice of wall construction materials evolve over time? Are the trends different across census divisions?  
@@ -138,12 +141,12 @@ html_table
 
 ## Conclusion
 
-*  Overall trend:
+*  Overall trend
     * Although on a downward trend, `brick, stone, or stucco` have always been one of the most common options for commercial buildings' wall material. 
     * `Sheet metal panels` steadily gained its popularity over the last century. 
     * `Concrete block or poured concrete` are popular among buildings constructed in the 1946 - 1969 period.
     * `Glass` has never been dominantly used as wall material. 
-*  Comparison across census region: 
+*  Comparison across census region
     * [To be updated!]{.fn} 
 *  Strengths and limitations of the analysis
     * [To be updated!]{.fn} 
