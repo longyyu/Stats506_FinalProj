@@ -28,7 +28,7 @@ h3{ /* Header 3 */
   font-size: 22px;
 }
 h4:not([class]){ /* Header 4 */
-  font-size: 18px;
+  font-size: 17px;
   text-decoration: underline;
 }
 h5{ /* Header 5 */
@@ -36,7 +36,7 @@ h5{ /* Header 5 */
   font-weight: bold;
 }
 blockquote {
-  font-size: 14px;
+  font-size: 15px;
 }
 pre { /* Scrollable code block */
   max-height: 300px;
@@ -66,34 +66,51 @@ source("final_project.R")
 
 ## To-do items
 
-*  Introduction: add why the question is interesting
-*  Conclusion: add analysis
+*  Finish the Conclusion/Discussion section
 *  Vertical-align the result table's NA values
+
+****
 
 ## Introduction
 
-This report attempts to answer the question:  
+Over the last century, constructing methods and technics have become more advanced and constructing codes have become increasingly stringent, and new building materials have been developed to meet the evolving needs. It can be interesting to compare the wall materials for US commercial buildings used before and now. 
+This report attempts to answer the following questions:  
 
 > How does the choice of wall construction materials evolve over time? Are the trends different across census divisions?  
   
 To answer these questions, I first compute the proportion of wall construction material types by year of construction to analyze the overall trend. 
 Then, I further divide the data by census division to see if different regions show distinct patterns.  
 
+****
 
 ## Data / Methods
+
+#### Data
 
 This project uses the 2012 US Commercial Building Energy Consumption Survey (CBECS) published by the U.S. Energy Information Administration (EIA): 
 
 *  2012 CBECS survey microdata ([2012_public_use_data_aug2016.csv]{.fn})
 *  Variable and response codebook ([2012microdata_codebook.xlsx]{.fn})
 
-*&ast; Data* are downloaded from [the EIA's website](https://www.eia.gov/consumption/residential/data/2009/index.php) using the shell script `download_data.sh`, which can be found in the project's repository. 
+#### Methods
 
+*  Point estimates of `percent of wall materials` are estimated from the full sample using the full sample building weight (`FINALWT`), and 95% confidence intervals are constructed based on the replicate sub-samples by using the replicate weights (`FINALWT1 – FINALWT197`). 
+*  As per the [documentation](https://www.eia.gov/consumption/commercial/data/2012/pdf/user_guide_public_use_aug2016.pdf), variances of estimations are estimated by:  
 
-!Describe the methods you used. There should be enough detail here that I could repeat your analysis. Focus on what you did, not how you did it. 
-
+<center>
+$\hat{V} (\hat{\theta}) = \sum_{r=1}^R \alpha_r(\hat{\theta}_r - \hat{\theta})^2$
+</center>
+  
+*  95% Confidence intervals are constructed using:  
+    
+<center>
+$\hat{\theta} \pm \Phi^{-1}(.975)\sqrt{\hat{V}(\hat{\theta})}$
+</center>
+  
 
 The data files and source code can be found in [this GitHub repository](https://github.com/longyyu/Stats506_FinalProj).
+
+****
 
 ## Results {.tabset .tabset-pills}
 
@@ -105,7 +122,7 @@ print(pic_yr)
 
 <br>
 
-```{r est_yr_region_plot, fig.width = 10, fig.height = 12, fig.cap = "**Fig 2.** % of wall material types by year of construction and census region"}
+```{r est_yr_region_plot, fig.width = 10, fig.height = 14, fig.cap = "**Fig 2.** % of wall material types by year of construction and census region"}
 print(pic_yr_region)
 ```
 
@@ -117,21 +134,17 @@ html_table
 
 ## {- .unlisted .unnumbered}
 
+****
 
 ## Conclusion
 
-!What do your results allow us to conclude about the question you posed? What are the strengths and limitations of your analysis?
-
-*  Overall, central air conditioning systems are the most popular options 
-for US households, followed by individual window/wall or portable units. 
-*  Households in very cold/cold area show stronger preferences for individual 
-units than other climate zones. 
-*  Urban/rural type does not have a significant influence on the 
-preferences. 
-*  The differences between 2009 and 2015 results did not present an obvious 
-pattern. However, it is worth noting that the `not applicable` rate in the 
-marine climate zone dropped from over 60% in 2009 to around 47% in 2015. 
-This may indicate that more households in the marine area started to use AC 
-equipment. But it can also be caused by other factors such as survey design. 
-
+*  Overall trend:
+    * Although on a downward trend, `brick, stone, or stucco` have always been one of the most common options for commercial buildings' wall material. 
+    * `Sheet metal panels` steadily gained its popularity over the last century. 
+    * `Concrete block or poured concrete` are popular among buildings constructed in the 1946 - 1969 period.
+    * `Glass` has never been dominantly used as wall material. 
+*  Comparison across census region: 
+    * [To be updated!]{.fn} 
+*  Strengths and limitations of the analysis
+    * [To be updated!]{.fn} 
 
