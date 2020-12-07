@@ -11,7 +11,7 @@
 # Updated: December 7, 2020
 
 # 79: -------------------------------------------------------------------------
-# setwd("E:/git/Stats506_private/final_proj")
+# setwd("E:/git/Stats506_FinalProj")
 
 # Libraries: ------------------------------------------------------------------
 library(data.table) # we will be using data.table for computation
@@ -148,7 +148,7 @@ est_by_yr_region = calc_estimate(
 )
 
 # Create figures to present the data ------------------------------------------
-dodge_width = .8
+dodge_width = .5
 wall_materials_old = levels(cbecs$wall_material)
 wall_materials_new = gsub(" \\(.*\\)", "", wall_materials_old) %>%
   stringr::str_wrap(width = 40)
@@ -267,7 +267,12 @@ html_table = est_table[, -"yr_conc"] %>%
     format = 'html', 
     escape = FALSE, 
     align = 'lcccc', 
-    col.names = c("Wall Material", names(est_table)[3:6])
+    col.names = c("Wall Material", names(est_table)[3:6]),
+    caption = paste0(
+      "**Table 1.** Estimated point estimates (95% CIs) ",
+      "for % of wall material types (`WLCNS`) by year of construction ",
+      "(`YRCONC`) and census region (`REGION`)"
+    )
   ) %>%
   kableExtra::row_spec(row = 0, align = "c") %>%
   kableExtra::kable_styling('striped', full_width = TRUE) %>%
