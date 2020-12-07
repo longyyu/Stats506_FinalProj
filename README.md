@@ -11,10 +11,11 @@ The analysis can be found in `report.html` [(preview)](https://raw.githack.com/l
 ## Data and Variables
 
 * **Dataset:** the 2012 US Commercial Building Energy Consumption Survey (CBECS)  
+
 | File | Link |
 | :---- | :----: |
 | Microdata | [link](https://www.eia.gov/consumption/commercial/data/2012/xls/2012_public_use_data_aug2016.csv) |
-| Variable and response codebook | [link[(https://www.eia.gov/consumption/commercial/data/2012/xls/2012microdata_codebook.xlsx) |
+| Variable and response codebook | [link](https://www.eia.gov/consumption/commercial/data/2012/xls/2012microdata_codebook.xlsx) |
 
 
 * **Variables:**  
