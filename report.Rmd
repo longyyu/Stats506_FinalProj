@@ -1,19 +1,20 @@
 ---
 title: "Stats 506, F20, Final Project"
 author: "Yanyu Long, longyyu@umich.edu"
-date: "December 07, 2020"
-output: 
-  html_document:
-    toc: true
-    toc_depth: 2
+date: "December 13, 2020"
+output: html_document
 ---
 
 ```{css, include = TRUE, echo = FALSE}
 body{ /* Normal */
   font-size: 15px;
 }
-td{ /* Table  */
+th, td{ /* Table  */
   font-size: 14px;
+}
+div.ci{
+  font-size: 12px;
+  color: DarkGrey;
 }
 #TOC{ /* Table of contents */
   font-size: 16px;
@@ -22,7 +23,7 @@ span.math{ /* Formulas */
   font-size: 13px;
 }
 h2{ /* Header 2 */
-  font-size: 28px;
+  font-size: 26px;
 }
 h3{ /* Header 3 */
   font-size: 22px;
@@ -31,12 +32,9 @@ h4:not([class]){ /* Header 4 */
   font-size: 17px;
   text-decoration: underline;
 }
-h5{ /* Header 5 */
-  font-size: 15px;
-  font-weight: bold;
-}
 blockquote {
   font-size: 15px;
+  font-family: Georgia, serif;
 }
 pre { /* Scrollable code block */
   max-height: 300px;
@@ -44,10 +42,6 @@ pre { /* Scrollable code block */
 }
 .fn { /* File names */
   color: IndianRed;
-}
-.narrow { /* Narrow tables */
-  width: 40%;
-  margin: auto; 
 }
 ```
 
@@ -66,20 +60,13 @@ source("final_project.R")
 
 ****
 
-## To-do items
-
-*  Finish the Conclusion/Discussion section
-*  Center-align the result table's NA values vertically
-
-****
-
 ## Introduction
 
 Over the last century, constructing methods and techniques have become more advanced, constructing codes have become increasingly stringent, and new building materials have been developed to meet the evolving needs. It can be interesting to compare the major wall materials for US commercial buildings used before and now.  
 
 This report attempts to answer the following questions:  
 
-> How does the choice of wall construction materials evolve over time? Are the trends different across census divisions?  
+> ***How does the choice of wall construction materials evolve over time? Are the trends different across census divisions?***  
   
 To answer these questions, I first compute the proportion of wall construction material types by year of construction to analyze the overall trend. 
 Then, I further divide the data by census division to see if different regions show distinct patterns.  
@@ -88,27 +75,17 @@ Then, I further divide the data by census division to see if different regions s
 
 ## Data / Methods
 
-#### Data
+This project uses the *2012 US Commercial Building Energy Consumption Survey (CBECS) survey microdata* published by the U.S. Energy Information Administration (EIA). 
+The *variable and response codebook* is also needed to decode the variables. 
 
-This project uses the 2012 US Commercial Building Energy Consumption Survey (CBECS) published by the U.S. Energy Information Administration (EIA): 
-
-*  2012 CBECS survey microdata ([2012_public_use_data_aug2016.csv]{.fn})
-*  Variable and response codebook ([2012microdata_codebook.xlsx]{.fn})
-
-#### Methods
+Below is an outline of the computation process. 
 
 *  Point estimates of `percent of wall materials` are estimated from the full sample using the full sample building weight (`FINALWT`), and 95% confidence intervals are constructed based on the replicate sub-samples by using the replicate weights (`FINALWT1 – FINALWT197`). 
-*  As per the [documentation](https://www.eia.gov/consumption/commercial/data/2012/pdf/user_guide_public_use_aug2016.pdf), variances of estimations are estimated by:  
-
-<center>
-$\hat{V} (\hat{\theta}) = \sum_{r=1}^R \alpha_r(\hat{\theta}_r - \hat{\theta})^2$
-</center>
-  
-*  95% Confidence intervals are constructed using:  
-    
-<center>
-$\hat{\theta} \pm \Phi^{-1}(.975)\sqrt{\hat{V}(\hat{\theta})}$
-</center>
+*  As per the [documentation](https://www.eia.gov/consumption/commercial/data/2012/pdf/user_guide_public_use_aug2016.pdf), variances of estimations are estimated by 
+$\hat{V} (\hat{\theta}) = \sum_{r=1}^R \alpha_r(\hat{\theta}_r - \hat{\theta})^2$, 
+where $\alpha_r = 1$. 
+*  95% Confidence intervals are constructed using 
+$\hat{\theta} \pm \Phi^{-1}(.975)\sqrt{\hat{V}(\hat{\theta})}$.
   
 
 The data files and source code can be found in [this GitHub repository](https://github.com/longyyu/Stats506_FinalProj).
@@ -119,13 +96,13 @@ The data files and source code can be found in [this GitHub repository](https://
 
 ### Figure
 
-```{r est_yr_plot, fig.width = 8, fig.height = 8, fig.cap = "**Fig 1.** % of wall material types by year of construction"}
+```{r est_yr_plot, fig.width = 7, fig.height = 6, fig.cap = "**Fig 1.** % of wall material types by year of construction"}
 print(pic_yr)
 ```
 
 <br>
 
-```{r est_yr_region_plot, fig.width = 10, fig.height = 14, fig.cap = "**Fig 2.** % of wall material types by year of construction and census region"}
+```{r est_yr_region_plot, fig.width = 11, fig.height = 10, fig.cap = "**Fig 2.** % of wall material types by year of construction and census region"}
 print(pic_yr_region)
 ```
 
