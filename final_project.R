@@ -8,7 +8,7 @@
 # https://www.eia.gov/consumption/commercial/data/2012/index.php?view=microdata
 
 # Author: Yanyu Long, longyyu@umich.edu
-# Updated: December 7, 2020
+# Updated: December 13, 2020
 
 # 79: -------------------------------------------------------------------------
 # setwd("E:/git/Stats506_FinalProj")
@@ -148,10 +148,10 @@ est_by_yr_region = calc_estimate(
 )
 
 # Create figures to present the data ------------------------------------------
-dodge_width = .5
+dodge_width = 0.75
 wall_materials_old = levels(cbecs$wall_material)
 wall_materials_new = gsub(" \\(.*\\)", "", wall_materials_old) %>%
-  stringr::str_wrap(width = 40)
+  stringr::str_wrap(width = 30)
 
 pic_yr = copy(est_by_yr) %>%
   .[, wall_material := factor(
@@ -220,13 +220,14 @@ pic_yr_region = copy(est_by_yr_region) %>%
   facet_wrap(~wall_material, ncol = 3) + 
   coord_flip()
 
-# Create table to present data -----------------------------------------------
-pack_by_var = function(dt, var, table){
+# Create table to present data ------------------------------------------------
+pack_by_var = function(dt, var, table, label_prefix = ""){
   # A helper function to pack rows in `table` by levels of variable `var`
   # Inputs:
   #   dt - a data.table, the original dataset to be presented as table
   #   var - a character, the name of the variable to pack rows by
   #   table - a kableExtra table, the table to be formatted
+  #   label_prefix - a string to be added before group labels
   # Output: the formatted version of `table`
   
   # compute the row span for each level of variable `var`
@@ -244,20 +245,26 @@ pack_by_var = function(dt, var, table){
     row = level_rowidx[idx, ]
     table = table %>%
       kableExtra::pack_rows(
-        group_label = row$level, row$min, row$max
+        group_label = paste0(label_prefix, row$level), row$min, row$max
       )
   }
   return(table)
 }
 
-est_table = copy(est_by_yr_region) %>% 
-  .[, pe_ci := sprintf("<div>%4.2f</div> <div>(%4.2f, %4.2f)</div>", 
-                       percent, lwr, upr)] %>%
-  dcast(yr_conc + wall_material ~ region,
-        value.var = "pe_ci") %>%
-  .[order(yr_conc, wall_material),]
+region_levels = levels(cbecs$region)
 
-html_table = est_table[, -"yr_conc"] %>%
+est_table = rbind(copy(est_by_yr)[, region := "All"], est_by_yr_region) %>% 
+  # make "All" the first level of variable region
+  .[, region := factor(as.character(region), 
+                       levels = c("All", region_levels), ordered = TRUE)] %>%
+  .[, pe_ci := sprintf("<div>%4.2f</div> <div class='ci'>(%4.2f, %4.2f)</div>",
+                       percent, lwr, upr)] %>%
+  dcast(region + wall_material ~ yr_conc,
+        value.var = "pe_ci") %>%
+  .[order(region, wall_material),] %>%
+  .[!(wall_material %in% c("No one major type", "Other")), ]
+
+html_table = est_table[, -"region"] %>%
   .[, wall_material := factor(
     as.character(wall_material),
     levels = wall_materials_old, 
@@ -266,14 +273,24 @@ html_table = est_table[, -"yr_conc"] %>%
   knitr::kable(
     format = 'html', 
     escape = FALSE, 
-    align = 'lcccc', 
-    col.names = c("Wall Material", names(est_table)[3:6]),
+    align = 'lcccccccccc', 
+    col.names = c("Wall Material", names(est_table)[3:12]),
     caption = paste0(
-      "**Table 1.** Estimated point estimates (95% CIs) ",
-      "for % of wall material types (`WLCNS`) by year of construction ",
-      "(`YRCONC`) and census region (`REGION`)"
+      "**Table 1.** ", 
+      "Estimated point estimates (95% CIs) for % of wall material types ",
+      "by year of construction and census region <br>",
+      "Two levels of wall materials, `No one major type` and `Other`, ",
+      "are omitted from the tabular presentation. "
     )
   ) %>%
-  kableExtra::row_spec(row = 0, align = "c") %>%
-  kableExtra::kable_styling('striped', full_width = TRUE) %>%
-  pack_by_var(dt = est_table, var = "yr_conc")
+  kableExtra::row_spec(
+    row = 0, align = "c",
+    extra_css = "vertical-align: middle; padding: 2px;"
+  ) %>%
+  kableExtra::column_spec(
+    column = 1:(length(est_table) - 1), 
+    width_max = "12em", 
+    extra_css = "vertical-align: middle; padding: 4px 2px;"
+  ) %>%
+  kableExtra::kable_styling('striped') %>%
+  pack_by_var(dt = est_table, var = "region", label_prefix = "Region: ")
