@@ -1,6 +1,6 @@
 # Stats 506, F20, Final Project
 
-# This script computes the proportion of different wall materials of US 
+# This script computes the proportions of major wall materials of US 
 # commercial buildings by construction years and census regions. 
 
 # Data Source: 
@@ -8,7 +8,7 @@
 # https://www.eia.gov/consumption/commercial/data/2012/index.php?view=microdata
 
 # Author: Yanyu Long, longyyu@umich.edu
-# Updated: December 13, 2020
+# Updated: December 15, 2020
 
 # 79: -------------------------------------------------------------------------
 # setwd("E:/git/Stats506_FinalProj")
@@ -27,7 +27,7 @@ cb_file_2012 = paste0(data_lib, "2012microdata_codebook.xlsx")
 
 ## data processing helper functions
 split_level_label = function(mapping){
-  # Extract level and label information from string `mapping`
+  # Extracts level and label information from string `mapping`
   # Input: mapping - the string to be splitted
   # Output: a length-2 character list with the first element being level and 
   #         the second being label
@@ -42,7 +42,7 @@ split_level_label = function(mapping){
 }
 
 decode_factor = function(var_to_decode, var_cb, codes){
-  # Apply factor labels to variables
+  # Applys factor labels to variables
   # Inputs:
   #   var_to_decode - vector, input vector to be changed to factor
   #   var_cb - char, variable name in the codebook
@@ -98,7 +98,7 @@ cbecs = cbecs[, .(
 
 # Compute point estimates and CIs ---------------------------------------------
 calc_estimate = function(vars_group, var_target) {
-  # Compute point estimates and 95% confidence intervals 
+  # Computes point estimates and 95% confidence intervals 
   # for variable `var_target`, grouped by `vars_group`
   # Inputs:
   #   vars_group - a vector of strings, names of variables to group data by
