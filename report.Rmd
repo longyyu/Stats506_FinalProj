@@ -1,20 +1,33 @@
 ---
-title: "Stats 506, F20, Final Project"
+title: "Final Project"
+subtitle: "Stats 506, F20"
 author: "Yanyu Long, longyyu@umich.edu"
-date: "December 13, 2020"
+date: "December 15, 2020"
 output: html_document
 ---
 
 ```{css, include = TRUE, echo = FALSE}
 body{ /* Normal */
-  font-size: 15px;
+  font-size: 16px;
+  font-family: 'Times New Roman', serif;
 }
 th, td{ /* Table  */
+  font-size: 14px;
+}
+code {
   font-size: 14px;
 }
 div.ci{
   font-size: 12px;
   color: DarkGrey;
+}
+h3.subtitle{
+  font-size: 22px;
+  margin: 5px 0;
+}
+h4.author, h4.date{
+  font-size: 17px;
+  margin: 5px 0;
 }
 #TOC{ /* Table of contents */
   font-size: 16px;
@@ -22,11 +35,16 @@ div.ci{
 span.math{ /* Formulas */
   font-size: 13px;
 }
+h1{
+  font-family: Georgia, serif;
+}
 h2{ /* Header 2 */
   font-size: 26px;
+  font-family: Georgia, serif;
 }
 h3{ /* Header 3 */
   font-size: 22px;
+  font-family: Georgia, serif;
 }
 h4:not([class]){ /* Header 4 */
   font-size: 17px;
@@ -62,13 +80,13 @@ source("final_project.R")
 
 ## Introduction
 
-Over the last century, constructing methods and techniques have become more advanced, constructing codes have become increasingly stringent, and new building materials have been developed to meet the evolving needs. It can be interesting to compare the major wall materials for US commercial buildings used before and now.  
+Over the last century, constructing methods and techniques have become more advanced, constructing codes have become increasingly stringent, and new building materials have been developed to meet the evolving needs. It can be interesting to compare the major wall materials of US commercial buildings constructed at different time periods.  
 
 This report attempts to answer the following questions:  
 
 > ***How does the choice of wall construction materials evolve over time? Are the trends different across census divisions?***  
   
-To answer these questions, I first compute the proportion of wall construction material types by year of construction to analyze the overall trend. 
+To answer these questions, I first compute the proportions of wall construction material types by year of construction to analyze the overall trend. 
 Then, I further divide the data by census division to see if different regions show distinct patterns.  
 
 ****
@@ -80,12 +98,13 @@ The *variable and response codebook* is also needed to decode the variables.
 
 Below is an outline of the computation process. 
 
-*  Point estimates of `percent of wall materials` are estimated from the full sample using the full sample building weight (`FINALWT`), and 95% confidence intervals are constructed based on the replicate sub-samples by using the replicate weights (`FINALWT1 – FINALWT197`). 
+*  Point estimates of `percent of wall materials` are estimated from the full sample using the full sample building weight (`FINALWT`). The 95% confidence intervals are constructed based on the replicate sub-samples by using the replicate weights (`FINALWT1 – FINALWT197`). 
 *  As per the [documentation](https://www.eia.gov/consumption/commercial/data/2012/pdf/user_guide_public_use_aug2016.pdf), variances of estimations are estimated by 
 $\hat{V} (\hat{\theta}) = \sum_{r=1}^R \alpha_r(\hat{\theta}_r - \hat{\theta})^2$, 
 where $\alpha_r = 1$. 
 *  95% Confidence intervals are constructed using 
 $\hat{\theta} \pm \Phi^{-1}(.975)\sqrt{\hat{V}(\hat{\theta})}$.
+*  The above analysis is first conducted at the aggregated level (grouped by `year of construction` only), then at the regional level (further grouped by `census region`).
   
 
 The data files and source code can be found in [this GitHub repository](https://github.com/longyyu/Stats506_FinalProj).
@@ -102,9 +121,11 @@ print(pic_yr)
 
 <br>
 
-```{r est_yr_region_plot, fig.width = 11, fig.height = 10, fig.cap = "**Fig 2.** % of wall material types by year of construction and census region"}
+<div style="padding-left: 100px;">
+```{r est_yr_region_plot, fig.width = 10, fig.height = 10, fig.cap = "**Fig 2.** % of wall material types by year of construction and census region"}
 print(pic_yr_region)
 ```
+</div>
 
 ### Table
 
@@ -116,15 +137,16 @@ html_table
 
 ****
 
-## Conclusion
+## Conclusion / Discussion
 
-*  Overall trend
-    * Although on a downward trend, `brick, stone, or stucco` have always been one of the most common options for commercial buildings' wall material. 
-    * `Sheet metal panels` steadily gained its popularity over the last century. 
-    * `Concrete block or poured concrete` are popular among buildings constructed in the 1946 - 1969 period.
-    * `Glass` has never been dominantly used as wall material. 
-*  Comparison across census region
-    * [To be updated!]{.fn} 
-*  Strengths and limitations of the analysis
-    * [To be updated!]{.fn} 
-
+*  **Overall trend**
+    * Although on a downward trend, `brick, stone, or stucco` have always been one of the most common options for commercial buildings' wall material in all census regions. 
+    * `Sheet metal panels` steadily gained popularity over the last century. 
+    * `Concrete block or poured concrete` are popular among buildings constructed in the 1946 - 1969 period in all four regions.  
+*  **Comparison across census divisions**
+    * The Northeast census region has always favored `aluminum, asbestos, plastic, or wood materials` more than other regions, especially since the year 2000. 
+    This preference in turn lowered the percentages of `brick, stone, or stucco` and `sheet metal panels` in Northeast region's commercial buildings.
+    * Otherwise, the patterns of major wall material distribution are similar across the four census divisions. 
+*  **Strengths and limitations of the analysis**
+    * At the aggregated level (all census regions combined), the evolution of major wall materials has a clear pattern, and the widths of confidence intervals are within reasonable range.  
+    * However, for some regions, the unbalanced distribution of sample buildings across `year of construction` resulted in very wide confidence intervals. For example, both the Northeast and Midwest regions have much fewer sample buildings constructed after the year 2000 than before. In this case, the confidence intervals are too wide for any valid conclusion to be made.
