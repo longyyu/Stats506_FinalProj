@@ -1,6 +1,6 @@
-# Stats506_FinalProj
+# Profiling the choices of wall materials in US commercial buildings
 
-This repository contains the data, source code, and writeup for the final project of [Stats 506, F20](https://github.com/jbhender/Stats506_F20).  
+*[Stats 506, F20](https://github.com/jbhender/Stats506_F20) final project*
 
 ## Proposed Question
 
